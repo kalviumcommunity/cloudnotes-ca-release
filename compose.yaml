@@ -1,0 +1,12 @@
+services:
+  web:
+    image: cloudnotes:latest
+    ports:
+      - "8080:3000"
+    environment:
+      HOST: "127.0.0.1"
+      PORT: "3000"
+      APP_MODE: "development"
+    privileged: true
+    cpus: 2.0
+    mem_limit: 512m

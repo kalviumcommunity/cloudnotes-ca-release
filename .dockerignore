@@ -1,0 +1,15 @@
+.git
+**/.terraform
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfplan
+**/.env
+**/*.log
+**/logs
+*.md
+docs
+tests
+**/.pytest_cache
+**/.cache
+**/coverage
+**/__pycache__
