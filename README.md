@@ -1,9 +1,6 @@
 # CloudNotes release repair
 
-40-minute, 20-mark Cloud Computing Summative Internal Exam (Modules 1–3).
-Full task instructions and rubric: [assessment.md](assessment.md).
-Repair three release configurations. Application and helpers already work.
-CloudNotes is a stateless release-verification fixture, not a complete notes application.
+
 
 **Everything runs locally; no GCP account or cloud deployment is required.**
 
