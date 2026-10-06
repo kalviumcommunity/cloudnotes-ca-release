@@ -1,6 +1,7 @@
 # CloudNotes release repair
 
 40-minute, 20-mark Cloud Computing Summative Internal Exam (Modules 1–3).
+Full task instructions and rubric: [assessment.md](assessment.md).
 Repair three release configurations. Application and helpers already work.
 CloudNotes is a stateless release-verification fixture, not a complete notes application.
 
@@ -28,7 +29,7 @@ Instructor resolves occupied names/ports; do not remove unknown containers. Inst
 
 Edit only these files:
 
-1. **Terraform:** `terraform/main.tf`, `terraform/modules/storage/main.tf`. Use declared root inputs for bucket name, region and expiry. Exports must have uniform bucket-level access, enforced public-access prevention, and a deletion lifecycle at the configured age (default 30 days). Current policy is unsafe/incomplete, not proof of an exposed bucket; no real bucket or public IAM binding exists. Explain why state belongs outside Git and why successful validation alone cannot prove this design correct.
+1. **Terraform:** `terraform/main.tf`, `terraform/modules/storage/main.tf`. Use declared root inputs for bucket name, region and expiry. Exports must have uniform bucket-level access, enforced public-access prevention, and a deletion lifecycle at the configured age (default 30 days). Current policy is unsafe/incomplete, not proof of an exposed bucket; no real bucket or public IAM binding exists. Explain why exports remain private and why state belongs outside Git. Successful validation alone does not prove the design correct.
 2. **Image:** `Dockerfile`. Retain the build stage; rewrite the complete runtime section (six substantive instruction changes). Use official `node:22-bookworm-slim`, work directory `/app`, only packaged `dist` copied from the named build stage, files accessible to the existing `node` user, a non-root process, port 8080, and launch the packaged server.
 3. **Compose:** `compose.yaml`. Run the already-built version 1.0.0 image. Listen on all container interfaces at 8080, publish only host loopback at 8080, use production mode, disable privileged execution, and limit to 0.5 CPU/128 MB. Use documented [`cpus`](https://docs.docker.com/reference/compose-file/services/#cpus) and [`mem_limit`](https://docs.docker.com/reference/compose-file/services/#mem_limit) fields. Do not add builds, source mounts, or a root-user override. Distinguish container listening address from host publishing address.
 
@@ -45,7 +46,7 @@ terraform -chdir=terraform init
 terraform -chdir=terraform fmt -recursive
 terraform -chdir=terraform validate
 docker build -t cloudnotes:1.0.0 .
-docker image inspect cloudnotes:1.0.0 --format '{{.Config.User}}'
+docker image inspect cloudnotes:1.0.0 --format '{{.RepoTags}} user={{.Config.User}}'
 bash scripts/publish-local.sh
 docker compose config --quiet
 docker compose up -d
@@ -59,7 +60,13 @@ Publish helper explicitly pushes/pulls the version through the prepared local re
 
 ## Submit
 
-Commit and push your repairs to your fork. Submit **exactly three actual screenshots**, one editor/terminal split capture per task, with explanations as PDF text. Show configuration and verification evidence, including actual non-root execution/resource limits for the running container and registry digest. Do not fabricate output.
+Commit and push your repairs to your fork; no pull request needed. Submit one PDF named `<student-id>_CloudNotes.pdf`, with your name, student ID and fork URL. Include **exactly three actual screenshots**, one readable editor/terminal split capture per task, not collages. Label sections Task 1–3 and caption each screenshot:
+
+- Task 1: both repaired Terraform sections and successful validation. Two-sentence explanation: private exports and state outside Git.
+- Task 2: repaired runtime stage, successful build and image tag/user inspection. Two-sentence explanation: build/runtime separation and non-root execution.
+- Task 3: repaired web service, registry digest, running-service status and HTTP 200 production response. Two-sentence explanation: container listening address and version tags.
+
+Put explanations beneath screenshots as PDF text. No extra screenshots or ZIP. Do not fabricate output. Instructor checks committed fixes, including runtime security and limits; no additional student evidence beyond the assessment is required.
 
 Do not run Terraform plan/apply or outputs, provision cloud resources, install scanners, or add Kubernetes, CI/CD YAML, autoscaling or monitoring setup. No state migration or remote backend is needed.
 
