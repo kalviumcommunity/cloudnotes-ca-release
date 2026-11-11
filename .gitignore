@@ -5,3 +5,5 @@
 .env
 *.log
 logs/
+
+.lab/

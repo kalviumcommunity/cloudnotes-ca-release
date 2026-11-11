@@ -17,7 +17,7 @@ fi
 git --version
 curl --version
 docker --version
-docker info >/dev/null 2>&1 || fail 'Docker engine unavailable; instructor must start/configure it'
+docker info >/dev/null 2>&1 || fail 'Docker engine unavailable; start/configure it before timing'
 docker compose version || fail 'Docker Compose unavailable'
 curl --fail --silent --show-error --connect-timeout 3 --max-time 5 \
   http://localhost:5001/v2/ >/dev/null || fail 'Prepared registry unreachable at http://localhost:5001/v2/'

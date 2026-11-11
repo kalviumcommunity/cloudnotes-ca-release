@@ -14,13 +14,15 @@ cd cloudnotes-ca-release
 git checkout -b fix/cloudnotes-release
 ```
 
-Before the timer, instructor prepares Terraform 1.5+ (below 2.0), running Docker/Compose, Git/GitHub access, curl, and available ports 8080/5001. Instructor starts a loopback-only registry:
+CloudNotes has unsafe storage configuration, an unsuitable runtime image and incorrect Compose settings. Repair the three areas below and prove local release works.
+
+Before timing, install Terraform 1.5+ below 2.0, Bash, Python 3, Git, curl and Docker Engine/Compose v2 supporting `--wait`. Use Linux, macOS or WSL2; amd64/arm64 supported. Allow 2 CPUs, 4 GB free memory, 10 GB free disk and internet for Terraform registry/provider, GitHub and Docker registries. Ports 8080 and 5001 must be free. No paid Docker subscription required; use Engine or Desktop where free-use licence applies.
 
 ```bash
-docker run -d --name cloudnotes-ca-registry -p 127.0.0.1:5001:5000 registry:2
+bash scripts/prepare-lab.sh
 ```
 
-Instructor resolves occupied names/ports; do not remove unknown containers. Instructor validates this registry with the lab Docker configuration, caches `node:22-bookworm`, `node:22-bookworm-slim`, `registry:2` and the tested Google provider for the exam architecture, checks provider init per clone or supplies a configured plugin cache, and runs `bash scripts/preflight.sh` before the timer. Never commit `.terraform`.
+Start timer only after `SETUP READY`. Helper checks ports/tools, initializes and caches actual Google provider without validating broken configuration, pulls both Node bases and registry image, verifies actual loopback registry push/pull, then starts dedicated loopback-only `cloudnotes-ca-registry` and runs preflight. It does not change repair files. Never commit `.terraform` or `.lab`. Do not rerun setup during tasks. Resolve errors before timing; do not remove unknown containers or change daemon security. Initial downloads are ungraded preparation.
 
 ## Repair requirements
 
@@ -63,8 +65,8 @@ Commit and push your repairs to your fork; no pull request needed. Submit one PD
 - Task 2: repaired runtime stage, successful build and image tag/user inspection. Two-sentence explanation: build/runtime separation and non-root execution.
 - Task 3: repaired web service, registry digest, running-service status and HTTP 200 production response. Two-sentence explanation: container listening address and version tags.
 
-Put explanations beneath screenshots as PDF text. No extra screenshots or ZIP. Do not fabricate output. Instructor checks committed fixes, including runtime security and limits; no additional student evidence beyond the assessment is required.
+Put explanations beneath screenshots as PDF text. No extra screenshots or ZIP. Do not fabricate output. Committed fixes must meet runtime security and resource-limit requirements.
 
 Do not run Terraform plan/apply or outputs, provision cloud resources, install scanners, or add Kubernetes, CI/CD YAML, autoscaling or monitoring setup. No state migration or remote backend is needed.
 
-Optional cleanup after submission: `docker compose down`. Instructor owns registry cleanup.
+Optional cleanup after submission: `docker compose down`, then `docker rm -f cloudnotes-ca-registry` only for registry created by this clone. Registry contents are disposable. For fresh attempt remove `.lab` and use fresh clone. Never delete unrelated resources.

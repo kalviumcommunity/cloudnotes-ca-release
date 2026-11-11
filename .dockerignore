@@ -13,3 +13,5 @@ tests
 **/.cache
 **/coverage
 **/__pycache__
+
+.lab/
